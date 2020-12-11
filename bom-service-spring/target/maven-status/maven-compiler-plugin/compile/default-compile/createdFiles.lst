@@ -1,0 +1,15 @@
+com/cagst/bom/spring/security/AuthenticationToken.class
+com/cagst/bom/spring/webflux/exception/ConflictResourceException.class
+com/cagst/bom/spring/security/jwt/JwtProperties.class
+com/cagst/bom/spring/security/jwt/JwtReactiveAuthenticationManager.class
+com/cagst/bom/spring/security/ReactiveSecurityContextHolder.class
+com/cagst/bom/spring/webflux/cors/CorsAutoConfiguration.class
+com/cagst/bom/spring/r2dbc/BaseRepositoryR2dbc.class
+com/cagst/bom/spring/webflux/exception/BadRequestResourceException.class
+com/cagst/bom/spring/security/SecurityContextRepository.class
+com/cagst/bom/spring/security/ReactiveSecurityAutoConfiguration.class
+com/cagst/bom/spring/webflux/exception/NotFoundResourceException.class
+com/cagst/bom/spring/r2dbc/SqlParameterMap.class
+com/cagst/bom/spring/webflux/cors/CorsProperties.class
+com/cagst/bom/spring/security/jwt/JwtService.class
+com/cagst/bom/spring/security/jwt/JwtServiceImpl.class

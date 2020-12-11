@@ -1,0 +1,24 @@
+=== Get Tenants
+`GET` request used to find Tenants.
+
+operation::tenants/get-tenants[snippets='http-request,request-parameters,response-body']
+
+=== Get Tenant
+`GET` request used to find a specific Tenant by an identifier.
+
+operation::tenants/get-tenant[snippets='http-request,path-parameters,response-body,response-fields']
+
+=== Create Tenant
+`POST` request used to create a new Tenant.
+
+operation::tenants/create-tenant[snippets='http-request,request-body,response-body,response-fields']
+
+=== Update Tenant
+`PUT` request used to update an existing Tenant.
+
+operation::tenants/update-tenant[snippets='http-request,request-body,response-body,response-fields']
+
+=== Delete Tenant
+`DELETE` request used to delete an existing Tenant.
+
+operation::tenants/delete-tenant[snippets='http-request,path-parameters']

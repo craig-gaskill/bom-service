@@ -1,0 +1,8 @@
+= REST API for the Business Office Manager (BOM) Service
+{project-version}
+
+== Tenants
+include::tenants.adoc[]
+
+== Dictionaries
+include::dictionaries.adoc[]

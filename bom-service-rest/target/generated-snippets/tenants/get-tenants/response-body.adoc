@@ -1,0 +1,24 @@
+[source,options="nowrap"]
+----
+[ {
+  "tenantId" : 1,
+  "mnemonic" : "SANDBOX",
+  "name" : "Sandbox",
+  "locale" : "en_US",
+  "subscriptionType" : "EarlyAdopter",
+  "createdDateTime" : "2020-12-10T19:41:02.858638-06:00",
+  "active" : true,
+  "updatedDateTime" : "2020-12-10T19:41:02.858661-06:00",
+  "updatedCount" : 0
+}, {
+  "tenantId" : 2,
+  "mnemonic" : "DEMO",
+  "name" : "Demo",
+  "locale" : "en_US",
+  "subscriptionType" : "EarlyAdopter",
+  "createdDateTime" : "2020-12-10T19:41:02.858681-06:00",
+  "active" : true,
+  "updatedDateTime" : "2020-12-10T19:41:02.858688-06:00",
+  "updatedCount" : 0
+} ]
+----

@@ -1,0 +1,127 @@
+[
+  {
+    "display": "Gender",
+    "meaning": "GENDER",
+    "deletable": false,
+    "values": [
+      {
+        "display": "Female",
+        "meaning": "FEMALE"
+      },
+      {
+        "display": "Male",
+        "meaning": "MALE"
+      }
+    ]
+  },
+  {
+    "display": "Gender Identify",
+    "meaning": "GENDER_IDENTITY",
+    "deletable": false,
+    "values": [
+      {
+        "display": "Female",
+        "meaning": "FEMALE"
+      },
+      {
+        "display": "Male",
+        "meaning": "MALE"
+      },
+      {
+        "display": "Non Binary",
+        "meaning": "NON_BINARY",
+        "description": "Doesn't identify as Male or Female"
+      },
+      {
+        "display": "Transgender Male",
+        "meaning": "TRANSGENDER_MALE",
+        "description": "Transgender Female to Male"
+      },
+      {
+        "display": "Transgender Female",
+        "meaning": "TRANSGENDER_FEMALE",
+        "description": "Transgender Male to Female"
+      }
+    ]
+  },
+  {
+    "display": "Marital Status",
+    "meaning": "MARITAL_STATUS",
+    "deletable": false,
+    "values": [
+      {
+        "display": "Single",
+        "meaning": "SINGLE"
+      },
+      {
+        "display": "Married",
+        "meaning": "MARRIED"
+      },
+      {
+        "display": "Divorced",
+        "meaning": "DIVORCED"
+      },
+      {
+        "display": "Annulled",
+        "meaning": "ANNULLED"
+      }
+    ]
+  },
+  {
+    "display": "Ethnicity",
+    "meaning": "ETHNICITY",
+    "deletable": false,
+    "values": [
+      {
+        "display": "Hispanic or Latino",
+        "meaning": "HISPANIC_LATINO"
+      }
+    ]
+  },
+  {
+    "display": "Race",
+    "meaning": "RACE",
+    "deletable": false,
+    "values": [
+      {
+        "display": "White",
+        "meaning": "WHITE"
+      },
+      {
+        "display": "Black / African American",
+        "meaning": "BLACK"
+      },
+      {
+        "display": "Asian",
+        "meaning": "ASIAN"
+      },
+      {
+        "display": "American Indian",
+        "meaning": "AMERICAN_INDIAN"
+      },
+      {
+        "display": "Alaska Native",
+        "meaning": "ALASKA_NATIVE"
+      },
+      {
+        "display": "Native Hawaiian",
+        "meaning": "NATIVE_HAWAIIAN"
+      },
+      {
+        "display": "Other Pacific Islander",
+        "meaning": "OTHER_PACIFIC_ISLANDER"
+      }
+    ]
+  },
+  {
+    "display": "Person Identifier Type",
+    "meaning": "PERSON_IDENTIFIER",
+    "deletable": false,
+    "values": [
+      {
+        "display": "Social Security Number",
+        "meaning": "SSN"
+      }
+    ]
+  }
+]

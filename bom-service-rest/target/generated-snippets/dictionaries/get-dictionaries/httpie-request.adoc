@@ -1,0 +1,6 @@
+[source,bash]
+----
+$ http GET 'http://localhost:8080/dictionaries' \
+    'Accept:application/json' \
+    'Authorization:Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiIxIiwic3ViIjoiMSIsImV4cCI6MTYwNzY1MTE2NH0.f-NlgtHmbVrQ2JHjIhWr3729hZTHruD8thcN75vq-vy8GVfPe2ZOKvmXrA-iP2diw0LWds7d0Wsa0gwTjlxMsA'
+----

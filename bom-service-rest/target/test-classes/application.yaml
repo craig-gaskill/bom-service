@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: bom-service
+  r2dbc:
+    url: r2dbc:h2:mem:///bom_db?options=DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: bom_user
+    password: DEV2020
+  jackson:
+    default-property-inclusion: non_null
+
+server:
+  compression:
+    enabled: true
+  port: 9001
+  http2:
+    enabled: true
+
+logging:
+  level:
+    root: info
+
+bom:
+  cors:
+    allowed-headers: "*"
+    allowed-origins: "*"
+  security:
+    jwt:
+      secret-key: super-secret

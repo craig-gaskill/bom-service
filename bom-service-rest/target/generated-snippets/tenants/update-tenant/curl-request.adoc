@@ -1,0 +1,22 @@
+[source,bash]
+----
+$ curl 'http://localhost:8080/tenants/1' -i -X PUT \
+    -H 'Accept: application/json' \
+    -H 'Content-Type: application/json' \
+    -d '{
+  "tenantId" : 1,
+  "mnemonic" : "SANDBOX",
+  "name" : "Sandbox",
+  "locale" : "en_US",
+  "subscriptionType" : "EarlyAdopter",
+  "subscriptionStartDate" : null,
+  "subscriptionEndDate" : null,
+  "features" : null,
+  "createdId" : null,
+  "createdDateTime" : 1.607650862597466E9,
+  "active" : true,
+  "updatedId" : null,
+  "updatedDateTime" : 1.607650862597484E9,
+  "updatedCount" : 0
+}'
+----

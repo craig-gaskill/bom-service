@@ -1,0 +1,66 @@
+CREATE TABLE IF NOT EXISTS person (
+    person_id                   BIGSERIAL CONSTRAINT person_pk PRIMARY KEY,
+    tenant_id                   INT NOT NULL,
+    given_name                  VARCHAR(50) NOT NULL,
+    given_name_key              VARCHAR(50) NOT NULL,
+    common_name                 VARCHAR(50) NULL,
+    middle_name                 VARCHAR(50) NULL,
+    family_name                 VARCHAR(50) NOT NULL,
+    family_name_key             VARCHAR(50) NOT NULL,
+    prefix                      VARCHAR(50) NULL,
+    suffix                      VARCHAR(50) NULL,
+    dob_dt                      DATE NULL,
+    gender_cd                   BIGINT NULL,
+    gender_identity_cd          BIGINT NULL,
+    marital_status_cd           BIGINT NULL,
+    ethnicity_cd                BIGINT NULL,
+    race_cd                     BIGINT NULL,
+    locale_language             VARCHAR(5) NULL,
+    locale_country              VARCHAR(5) NULL,
+    active_ind                  BOOLEAN DEFAULT true,
+    created_dt_tm               TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    created_id                  BIGINT NOT NULL,
+    created_source              VARCHAR(50) NULL,
+    updated_dt_tm               TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_id                  BIGINT NOT NULL,
+    updated_source              VARCHAR(50) NULL,
+    updated_cnt                 INT DEFAULT 0,
+    CONSTRAINT person_tenant_fk FOREIGN KEY (tenant_id) REFERENCES tenant (tenant_id)
+);
+
+CREATE INDEX IF NOT EXISTS person_given_name_idx ON person (tenant_id, given_name_key);
+CREATE INDEX IF NOT EXISTS person_family_name_idx ON person (tenant_id, family_name_key);
+
+CREATE TABLE IF NOT EXISTS audit_person (
+    audit_id                    BIGSERIAL CONSTRAINT audit_person_pk PRIMARY KEY,
+    audit_reason                CHAR(1) NOT NULL,
+    audit_dt_tm                 TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    person_id                   BIGINT NULL,
+    tenant_id                   INT,
+    given_name                  VARCHAR(50),
+    given_name_key              VARCHAR(50),
+    common_name                 VARCHAR(50),
+    middle_name                 VARCHAR(50),
+    family_name                 VARCHAR(50),
+    family_name_key             VARCHAR(50),
+    prefix                      VARCHAR(50),
+    suffix                      VARCHAR(50),
+    dob_dt                      DATE,
+    gender_cd                   BIGINT,
+    gender_identity_cd          BIGINT,
+    marital_status_cd           BIGINT,
+    ethnicity_cd                BIGINT,
+    race_cd                     BIGINT,
+    locale_language             VARCHAR(5),
+    locale_country              VARCHAR(5),
+    active_ind                  BOOLEAN,
+    created_dt_tm               TIMESTAMP WITH TIME ZONE,
+    created_id                  BIGINT,
+    created_source              VARCHAR(50),
+    updated_dt_tm               TIMESTAMP WITH TIME ZONE,
+    updated_id                  BIGINT,
+    updated_source              VARCHAR(50),
+    updated_cnt                 INT
+);
+
+CREATE INDEX IF NOT EXISTS audit_person_idx ON audit_person (person_id);

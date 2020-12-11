@@ -1,0 +1,35 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+X-XSS-Protection: 1 ; mode=block
+Referrer-Policy: no-referrer
+Content-Length: 572
+
+[ {
+  "tenantId" : 1,
+  "mnemonic" : "SANDBOX",
+  "name" : "Sandbox",
+  "locale" : "en_US",
+  "subscriptionType" : "EarlyAdopter",
+  "createdDateTime" : "2020-12-10T19:41:02.858638-06:00",
+  "active" : true,
+  "updatedDateTime" : "2020-12-10T19:41:02.858661-06:00",
+  "updatedCount" : 0
+}, {
+  "tenantId" : 2,
+  "mnemonic" : "DEMO",
+  "name" : "Demo",
+  "locale" : "en_US",
+  "subscriptionType" : "EarlyAdopter",
+  "createdDateTime" : "2020-12-10T19:41:02.858681-06:00",
+  "active" : true,
+  "updatedDateTime" : "2020-12-10T19:41:02.858688-06:00",
+  "updatedCount" : 0
+} ]
+----

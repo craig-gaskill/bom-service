@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.cagst.bom.tenant.TenantRepositoryR2dbcTest
+-------------------------------------------------------------------------------
+Tests run: 17, Failures: 0, Errors: 0, Skipped: 2, Time elapsed: 5.168 s - in com.cagst.bom.tenant.TenantRepositoryR2dbcTest

@@ -1,0 +1,5 @@
+=== Get Dictionaries
+
+A `GET` request used to find Dictionaries.
+
+operation::dictionaries/get-dictionaries[snippets='http-request,response-body']

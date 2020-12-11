@@ -1,0 +1,13 @@
+|===
+|Parameter|Description
+
+|`+start+`
+|Specifies the position in the collection to start retrieving records from.
+
+|`+limit+`
+|Specifies the maximum number of records to retrieve.
+
+|`+includeInactive+`
+|Indicates if inactive records are to be returned.
+
+|===

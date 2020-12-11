@@ -1,0 +1,14 @@
+[source,options="nowrap"]
+----
+{
+  "tenantId" : 101,
+  "mnemonic" : "NEW_TENANT",
+  "name" : "New Tenant",
+  "locale" : "en_US",
+  "subscriptionType" : "EarlyAdopter",
+  "createdDateTime" : "2020-12-10T19:41:02.678369-06:00",
+  "active" : true,
+  "updatedDateTime" : "2020-12-10T19:41:02.678392-06:00",
+  "updatedCount" : 0
+}
+----

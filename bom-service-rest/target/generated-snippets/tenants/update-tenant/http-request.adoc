@@ -1,0 +1,25 @@
+[source,http,options="nowrap"]
+----
+PUT /tenants/1 HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+Content-Length: 387
+Host: localhost:8080
+
+{
+  "tenantId" : 1,
+  "mnemonic" : "SANDBOX",
+  "name" : "Sandbox",
+  "locale" : "en_US",
+  "subscriptionType" : "EarlyAdopter",
+  "subscriptionStartDate" : null,
+  "subscriptionEndDate" : null,
+  "features" : null,
+  "createdId" : null,
+  "createdDateTime" : 1.607650862597466E9,
+  "active" : true,
+  "updatedId" : null,
+  "updatedDateTime" : 1.607650862597484E9,
+  "updatedCount" : 0
+}
+----

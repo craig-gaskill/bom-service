@@ -1,0 +1,15 @@
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-spring/src/main/java/com/cagst/bom/spring/security/jwt/JwtService.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-spring/src/main/java/com/cagst/bom/spring/webflux/exception/ConflictResourceException.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-spring/src/main/java/com/cagst/bom/spring/webflux/cors/CorsProperties.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-spring/src/main/java/com/cagst/bom/spring/webflux/cors/CorsAutoConfiguration.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-spring/src/main/java/com/cagst/bom/spring/security/ReactiveSecurityAutoConfiguration.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-spring/src/main/java/com/cagst/bom/spring/security/SecurityContextRepository.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-spring/src/main/java/com/cagst/bom/spring/security/jwt/JwtReactiveAuthenticationManager.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-spring/src/main/java/com/cagst/bom/spring/r2dbc/SqlParameterMap.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-spring/src/main/java/com/cagst/bom/spring/security/AuthenticationToken.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-spring/src/main/java/com/cagst/bom/spring/security/jwt/JwtProperties.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-spring/src/main/java/com/cagst/bom/spring/security/ReactiveSecurityContextHolder.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-spring/src/main/java/com/cagst/bom/spring/webflux/exception/BadRequestResourceException.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-spring/src/main/java/com/cagst/bom/spring/security/jwt/JwtServiceImpl.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-spring/src/main/java/com/cagst/bom/spring/webflux/exception/NotFoundResourceException.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-spring/src/main/java/com/cagst/bom/spring/r2dbc/BaseRepositoryR2dbc.java

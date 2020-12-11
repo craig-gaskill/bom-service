@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="bom-service-rest:war">
+    <output-path>$PROJECT_DIR$/bom-service-rest/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>bom-service-rest</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="bom-service-rest-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="bom-service-rest:war exploded" />
+    </root>
+  </artifact>
+</component>

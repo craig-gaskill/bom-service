@@ -1,0 +1,14 @@
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-rest/src/test/java/com/cagst/bom/person/PersonRepositoryR2dbcTest.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-rest/src/test/java/com/cagst/bom/tenant/TenantServiceImplTest.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-rest/src/test/java/com/cagst/bom/dictionary/attribute/DictionaryAttributeRepositoryR2dbcTest.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-rest/src/test/java/com/cagst/bom/dictionary/value/DictionaryValueRepositoryR2dbcTest.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-rest/src/test/java/com/cagst/bom/BomServiceApplicationTest.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-rest/src/test/java/com/cagst/bom/tenant/TenantResourceTest.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-rest/src/test/java/com/cagst/bom/tenant/TenantRepositoryR2dbcTest.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-rest/src/test/java/com/cagst/bom/TestConnectionFactoryInitializer.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-rest/src/test/java/com/cagst/bom/dictionary/DictionaryServiceImplTest.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-rest/src/test/java/com/cagst/bom/user/UserRepositoryR2dbcTest.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-rest/src/test/java/com/cagst/bom/dictionary/attribute/DictionaryAttributeServiceImplTest.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-rest/src/test/java/com/cagst/bom/dictionary/DictionaryRepositoryR2dbcTest.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-rest/src/test/java/com/cagst/bom/dictionary/attribute/DictionaryAttributeResourceTest.java
+/Users/cgaskill/wip/cagst/bom/bom-service/bom-service-rest/src/test/java/com/cagst/bom/dictionary/DictionaryResourceTest.java
