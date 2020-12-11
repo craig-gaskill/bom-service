@@ -1,8 +1,0 @@
-[source,http,options="nowrap"]
-----
-GET /dictionaries HTTP/1.1
-Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiIxIiwic3ViIjoiMSIsImV4cCI6MTYwNzY1MTE2NH0.f-NlgtHmbVrQ2JHjIhWr3729hZTHruD8thcN75vq-vy8GVfPe2ZOKvmXrA-iP2diw0LWds7d0Wsa0gwTjlxMsA
-Host: localhost:8080
-
-----

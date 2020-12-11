@@ -1,5 +1,0 @@
-[source,bash]
-----
-$ curl 'http://localhost:8080/tenants/1' -i -X GET \
-    -H 'Accept: application/json'
-----

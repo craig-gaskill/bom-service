@@ -1,8 +1,0 @@
-.+/tenants/{tenantId}+
-|===
-|Parameter|Description
-
-|`+tenantId+`
-|The unique identifier of the Tenant to retrieve
-
-|===

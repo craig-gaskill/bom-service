@@ -1,8 +1,0 @@
-.+/tenants/{identifier}+
-|===
-|Parameter|Description
-
-|`+identifier+`
-|The identifier of the Tenant to retrieve. Could either be the unique identifier (tenantId) or the mnemonic.
-
-|===

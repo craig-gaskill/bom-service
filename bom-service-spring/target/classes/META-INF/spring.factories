@@ -1,4 +1,0 @@
-# Auto Configure
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.cagst.bom.spring.security.ReactiveSecurityAutoConfiguration,\
-com.cagst.bom.spring.webflux.cors.CorsAutoConfiguration
