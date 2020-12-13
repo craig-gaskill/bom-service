@@ -7,6 +7,8 @@ import java.util.Objects;
 
 import com.cagst.bom.person.Person;
 import com.cagst.bom.person.PersonService;
+import com.cagst.bom.role.Role;
+import com.cagst.bom.role.RoleRepository;
 import com.cagst.bom.security.SecurityInfo;
 import com.cagst.bom.security.SecurityPolicyService;
 import com.cagst.bom.spring.webflux.exception.BadRequestResourceException;
@@ -20,6 +22,8 @@ import com.cagst.bom.user.UserEntity;
 import com.cagst.bom.user.UserRepository;
 import com.cagst.bom.user.access.UserAccess;
 import com.cagst.bom.user.access.UserAccessRepository;
+import com.cagst.bom.user.role.UserRole;
+import com.cagst.bom.user.role.UserRoleRepository;
 import com.cagst.bom.util.CommonStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -48,7 +52,9 @@ import reactor.core.publisher.Mono;
     private final SecurityPolicyService securityPolicyService;
     private final PersonService personService;
     private final TenantService tenantService;
+    private final RoleRepository roleRepository;
     private final UserAccessRepository userAccessRepository;
+    private final UserRoleRepository userRoleRepository;
 
     @Autowired
     public AuthenticationServiceImpl(PasswordEncoder passwordEncoder,
@@ -56,14 +62,18 @@ import reactor.core.publisher.Mono;
                                      SecurityPolicyService securityPolicyService,
                                      PersonService personService,
                                      TenantService tenantService,
-                                     UserAccessRepository userAccessRepository
+                                     RoleRepository roleRepository,
+                                     UserAccessRepository userAccessRepository,
+                                     UserRoleRepository userRoleRepository
     ) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.securityPolicyService = securityPolicyService;
         this.personService = personService;
         this.tenantService = tenantService;
+        this.roleRepository = roleRepository;
         this.userAccessRepository = userAccessRepository;
+        this.userRoleRepository = userRoleRepository;
     }
 
     @Override
@@ -167,44 +177,14 @@ import reactor.core.publisher.Mono;
             .password(passwordEncoder.encode(registerRequest.password()))
             .build()
         ).flatMap(user ->
-            tenantService.insert(
-                new SecurityInfo.Builder()
-                    .from(tempSecurityInfo)
-                    .userId(user.userId())
-                    .build(),
-                new Tenant.Builder()
-                    .name(registerRequest.tenantName())
-                    .mnemonic(CommonStringUtils.normalizeToKey(registerRequest.tenantName()))
-                    .subscriptionType(SubscriptionType.EarlyAdopter)
-                    .subscriptionStartDate(LocalDate.now())
-                    .build(),
-                registerRequest.features()
-            ).flatMap(tenant -> {
-                var finalSecurityInfo = new SecurityInfo.Builder()
-                    .tenantId(tenant.tenantId())
-                    .userId(user.userId())
-                    .source(tempSecurityInfo.source())
-                    .build();
-
-                return personService.insert(finalSecurityInfo,
-                    new Person.Builder()
-                        .givenName(registerRequest.firstName())
-                        .familyName(registerRequest.lastName())
-                        .build()
-                ).flatMap(person -> userAccessRepository.merge(finalSecurityInfo, new UserAccess.Builder()
-                    .tenantId(tenant.tenantId())
-                    .userId(user.userId())
-                    .personId(person.personId())
-                    .defaultIndicator(true)
-                    .lastLoginDateTime(OffsetDateTime.now())
-                    .lastLoginIp(remoteAddress)
-                    .build()
-                )).map(userAccess -> UserConverter.convert(new UserEntity.Builder()
-                    .from(user)
-                    .access(Collections.singletonList(userAccess))
-                    .build()
-            ));
-        }));
+            insertTenant(tempSecurityInfo, user, registerRequest)
+                .flatMap(si ->
+                    insertPerson(si, registerRequest)
+                        .flatMap(person -> insertUserAccess(si, person, remoteAddress))
+                )
+                .flatMap(this::insertAdminRole)
+                .map(__ -> UserConverter.convert(user))
+        );
     }
 
     @Override
@@ -238,5 +218,70 @@ import reactor.core.publisher.Mono;
                 }
             })
             .map(UserConverter::convert);
+    }
+
+    private Mono<SecurityInfo> insertTenant(SecurityInfo securityInfo, UserEntity user, RegisterRequest registerRequest) {
+        return tenantService.insert(
+            new SecurityInfo.Builder()
+                .from(securityInfo)
+                .userId(user.userId())
+                .build(),
+            new Tenant.Builder()
+                .name(registerRequest.tenantName())
+                .mnemonic(CommonStringUtils.normalizeToKey(registerRequest.tenantName()))
+                .subscriptionType(SubscriptionType.EarlyAdopter)
+                .subscriptionStartDate(LocalDate.now())
+                .build(),
+            registerRequest.features()
+        ).map(tenant -> new SecurityInfo.Builder()
+            .from(securityInfo)
+            .userId(user.userId())
+            .tenantId(tenant.tenantId())
+            .build()
+        );
+    }
+
+    private Mono<Role> insertAdminRole(SecurityInfo securityInfo) {
+        return roleRepository.insert(
+            securityInfo,
+            new Role.Builder()
+                .name("Administrator")
+                .fullAccess(true)
+                .build()
+        ).map(role -> {
+            userRoleRepository.merge(
+                securityInfo,
+                new UserRole.Builder()
+                    .userId(securityInfo.userId())
+                    .roleId(role.roleId())
+                    .build()
+            );
+
+            return role;
+        });
+    }
+
+    private Mono<Person> insertPerson(SecurityInfo securityInfo, RegisterRequest registerRequest) {
+        return personService.insert(
+            securityInfo,
+            new Person.Builder()
+                .givenName(registerRequest.firstName())
+                .familyName(registerRequest.lastName())
+                .build()
+        );
+    }
+
+    private Mono<SecurityInfo> insertUserAccess(SecurityInfo securityInfo, Person person, String remoteAddress) {
+        return userAccessRepository.merge(
+            securityInfo,
+            new UserAccess.Builder()
+                .tenantId(securityInfo.tenantId())
+                .userId(securityInfo.userId())
+                .personId(person.personId())
+                .defaultIndicator(true)
+                .lastLoginDateTime(OffsetDateTime.now())
+                .lastLoginIp(remoteAddress)
+                .build()
+        ).map(__ -> securityInfo);
     }
 }

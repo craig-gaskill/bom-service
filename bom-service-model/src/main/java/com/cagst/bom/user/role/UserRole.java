@@ -1,6 +1,4 @@
-package com.cagst.bom.user.access;
-
-import java.time.OffsetDateTime;
+package com.cagst.bom.user.role;
 
 import com.cagst.bom.BaseDTO;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -8,15 +6,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.immutables.value.Value;
 import org.springframework.lang.Nullable;
 
-@JsonDeserialize(builder = UserAccess.Builder.class)
+@JsonDeserialize(builder = UserRole.Builder.class)
 @JsonPropertyOrder({
-    "userAccessId",
+    "userRoleId",
     "userId",
-    "tenantId",
-    "personId",
-    "defaultIndicator",
-    "lastLoginDateTime",
-    "lastLoginIp",
+    "roleId",
     "createdId",
     "createdDateTime",
     "active",
@@ -26,28 +20,15 @@ import org.springframework.lang.Nullable;
 })
 @Value.Immutable(copy = false)
 @Value.Style(visibility = Value.Style.ImplementationVisibility.PACKAGE, overshadowImplementation = true)
-public interface UserAccess extends BaseDTO {
+public interface UserRole extends BaseDTO {
     @Nullable
     @Value.Auxiliary
-    Long userAccessId();
+    Long userRoleId();
 
     long userId();
 
-    int tenantId();
-
-    long personId();
-
-    @Value.Default
-    default boolean defaultIndicator() {
-        return false;
-    }
-
-    @Nullable
-    OffsetDateTime lastLoginDateTime();
-
-    @Nullable
-    String lastLoginIp();
+    long roleId();
 
     // static inner Builder class extends generated or yet-to-be generated Builder
-    class Builder extends ImmutableUserAccess.Builder implements BaseDTO.Builder {}
+    class Builder extends ImmutableUserRole.Builder implements BaseDTO.Builder {}
 }

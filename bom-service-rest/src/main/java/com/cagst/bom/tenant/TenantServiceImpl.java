@@ -8,8 +8,6 @@ import java.util.Objects;
 import java.util.Set;
 
 import com.cagst.bom.feature.ValidFeatures;
-import com.cagst.bom.role.Role;
-import com.cagst.bom.role.RoleRepository;
 import com.cagst.bom.search.SearchCriteria;
 import com.cagst.bom.security.SecurityInfo;
 import com.cagst.bom.spring.webflux.exception.BadRequestResourceException;
@@ -38,19 +36,16 @@ import reactor.core.publisher.Mono;
 /* package */ class TenantServiceImpl implements TenantService {
     private final TenantRepository tenantRepository;
     private final TenantFeatureRepository tenantFeatureRepository;
-    private final RoleRepository roleRepository;
 
     private final TenantEventPublisher tenantEventPublisher;
 
     @Autowired
     public TenantServiceImpl(TenantRepository tenantRepository,
                              TenantFeatureRepository tenantFeatureRepository,
-                             RoleRepository roleRepository,
                              TenantEventPublisher tenantEventPublisher
     ) {
         this.tenantRepository = tenantRepository;
         this.tenantFeatureRepository = tenantFeatureRepository;
-        this.roleRepository = roleRepository;
         this.tenantEventPublisher = tenantEventPublisher;
     }
 
@@ -133,10 +128,6 @@ import reactor.core.publisher.Mono;
                 new SecurityInfo.Builder().from(securityInfo).tenantId(insertedTenant.tenantId()).build(),
                 insertedTenant,
                 CollectionUtils.isEmpty(featureMeanings) ? Collections.singleton(ValidFeatures.CORE.name()) : featureMeanings
-            ))
-            .flatMap(insertedTenant -> createAdminRole(
-                new SecurityInfo.Builder().from(securityInfo).tenantId(insertedTenant.tenantId()).build(),
-                insertedTenant
             ))
             .doOnSuccess(insertedTenant -> tenantEventPublisher.publishTenantCreatedEvent(
                 new SecurityInfo.Builder().from(securityInfo).tenantId(insertedTenant.tenantId()).build(),
@@ -279,13 +270,5 @@ import reactor.core.publisher.Mono;
                 )
         ).collectList()
          .map(features -> new Tenant.Builder().from(tenant).features(features).build());
-    }
-
-    private Mono<Tenant> createAdminRole(SecurityInfo securityInfo, Tenant tenant) {
-        return roleRepository.insert(securityInfo, new Role.Builder()
-            .name("Administrator")
-            .fullAccess(true)
-            .build()
-        ).map(__ -> tenant);
     }
 }

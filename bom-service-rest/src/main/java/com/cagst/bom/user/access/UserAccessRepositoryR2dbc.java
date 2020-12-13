@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -68,12 +69,14 @@ import reactor.core.publisher.Mono;
 
         return databaseClient.sql(query)
             .bind("user_id", userId)
-            .map(this.USER_ACCESS_MAPPER)
+            .map(USER_ACCESS_MAPPER)
             .all();
     }
 
     @Override
     public Mono<UserAccess> merge(@NonNull SecurityInfo securityInfo, @NonNull UserAccess userAccess) {
+        Assert.notNull(securityInfo, "Argument [securityInfo] cannot be null or empty.");
+
         var query =
             "INSERT INTO users_access (" +
             "  user_id" +

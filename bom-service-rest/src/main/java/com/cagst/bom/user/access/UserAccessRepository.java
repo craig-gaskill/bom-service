@@ -45,6 +45,8 @@ public interface UserAccessRepository {
     /**
      * Will merge (insert or update) the given {@link UserAccess} to persistent storage.
      *
+     * @param securityInfo
+     *      The {@link SecurityInfo} that contains the information about the user and tenant the request is for.
      * @param userAccess
      *      The {@link UserAccess} record to merge into persistent storage.
      *

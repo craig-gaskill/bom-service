@@ -15,8 +15,6 @@ import static org.mockito.Mockito.when;
 import java.util.Collections;
 import java.util.List;
 
-import com.cagst.bom.role.Role;
-import com.cagst.bom.role.RoleRepository;
 import com.cagst.bom.search.SearchCriteria;
 import com.cagst.bom.security.SecurityInfo;
 import com.cagst.bom.spring.webflux.exception.BadRequestResourceException;
@@ -42,13 +40,11 @@ import reactor.test.StepVerifier;
 class TenantServiceImplTest {
     private final TenantRepository tenantRepository = mock(TenantRepository.class);
     private final TenantFeatureRepository tenantFeatureRepository = mock(TenantFeatureRepository.class);
-    private final RoleRepository roleRepository = mock(RoleRepository.class);
     private final TenantEventPublisher tenantEventPublisher = mock(TenantEventPublisher.class);
 
     private final TenantServiceImpl service = new TenantServiceImpl(
         tenantRepository,
         tenantFeatureRepository,
-        roleRepository,
         tenantEventPublisher
     );
 
@@ -66,8 +62,6 @@ class TenantServiceImplTest {
             .thenReturn(Flux.empty());
         when(tenantFeatureRepository.find(any(SecurityInfo.class)))
             .thenReturn(Flux.empty());
-        when(roleRepository.insert(any(SecurityInfo.class), any(Role.class)))
-            .thenAnswer(mock -> Mono.just(mock.getArgument(1)));
     }
 
     @DisplayName("when find Tenant")

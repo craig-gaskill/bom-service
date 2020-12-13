@@ -265,7 +265,8 @@ import reactor.core.publisher.Mono;
             .addValue("updated_source", securityInfo.source(), String.class)
             .bind(spec);
 
-        return spec.fetch().one()
+        return spec.fetch()
+            .one()
             .map(result -> (Long)result.get("user_id"))
             .map(userId -> new UserEntity.Builder()
                 .from(user)
