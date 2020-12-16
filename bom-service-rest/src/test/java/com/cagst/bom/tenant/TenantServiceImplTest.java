@@ -15,6 +15,7 @@ import static org.mockito.Mockito.when;
 import java.util.Collections;
 import java.util.List;
 
+import com.cagst.bom.dictionary.DictionaryService;
 import com.cagst.bom.search.SearchCriteria;
 import com.cagst.bom.security.SecurityInfo;
 import com.cagst.bom.spring.webflux.exception.BadRequestResourceException;
@@ -40,11 +41,13 @@ import reactor.test.StepVerifier;
 class TenantServiceImplTest {
     private final TenantRepository tenantRepository = mock(TenantRepository.class);
     private final TenantFeatureRepository tenantFeatureRepository = mock(TenantFeatureRepository.class);
+    private final DictionaryService dictionaryService = mock(DictionaryService.class);
     private final TenantEventPublisher tenantEventPublisher = mock(TenantEventPublisher.class);
 
     private final TenantServiceImpl service = new TenantServiceImpl(
         tenantRepository,
         tenantFeatureRepository,
+        dictionaryService,
         tenantEventPublisher
     );
 

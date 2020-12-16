@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import com.cagst.bom.BaseDTO;
+import com.cagst.bom.dictionary.DictionaryService;
 import com.cagst.bom.feature.ValidFeatures;
+import com.cagst.bom.imports.ImportType;
 import com.cagst.bom.search.SearchCriteria;
 import com.cagst.bom.security.SecurityInfo;
 import com.cagst.bom.spring.webflux.exception.BadRequestResourceException;
@@ -36,16 +39,19 @@ import reactor.core.publisher.Mono;
 /* package */ class TenantServiceImpl implements TenantService {
     private final TenantRepository tenantRepository;
     private final TenantFeatureRepository tenantFeatureRepository;
+    private final DictionaryService dictionaryService;
 
     private final TenantEventPublisher tenantEventPublisher;
 
     @Autowired
     public TenantServiceImpl(TenantRepository tenantRepository,
                              TenantFeatureRepository tenantFeatureRepository,
+                             DictionaryService dictionaryService,
                              TenantEventPublisher tenantEventPublisher
     ) {
         this.tenantRepository = tenantRepository;
         this.tenantFeatureRepository = tenantFeatureRepository;
+        this.dictionaryService = dictionaryService;
         this.tenantEventPublisher = tenantEventPublisher;
     }
 
@@ -118,9 +124,6 @@ import reactor.core.publisher.Mono;
         Assert.notNull(securityInfo, "Argument [securityInfo] cannot be null");
         Assert.notNull(tenant, "Argument [tenant] cannot be null");
 
-        // TODO: Import the Dictionaries for the Core feature (and any feature they selected during
-        //       the registration process).
-
         return isValid(tenant)
             .flatMap(__ -> checkForDuplicates(securityInfo, tenant))
             .flatMap(__ -> tenantRepository.insertTenant(securityInfo, tenant))
@@ -129,7 +132,11 @@ import reactor.core.publisher.Mono;
                 insertedTenant,
                 CollectionUtils.isEmpty(featureMeanings) ? Collections.singleton(ValidFeatures.CORE.name()) : featureMeanings
             ))
-            .doOnSuccess(insertedTenant -> tenantEventPublisher.publishTenantCreatedEvent(
+            .flatMap(insertedTenant -> importDictionaries(
+                new SecurityInfo.Builder().from(securityInfo).tenantId(insertedTenant.tenantId()).build(),
+                insertedTenant
+            ))
+            .doOnNext(insertedTenant -> tenantEventPublisher.publishTenantCreatedEvent(
                 new SecurityInfo.Builder().from(securityInfo).tenantId(insertedTenant.tenantId()).build(),
                 insertedTenant)
             );
@@ -270,5 +277,24 @@ import reactor.core.publisher.Mono;
                 )
         ).collectList()
          .map(features -> new Tenant.Builder().from(tenant).features(features).build());
+    }
+
+    private Mono<Tenant> importDictionaries(SecurityInfo securityInfo, Tenant tenant) {
+        if (CollectionUtils.isEmpty(tenant.features())) {
+            return Mono.just(tenant);
+        }
+
+        tenant.features()
+            .stream()
+            .filter(BaseDTO::active)
+            .forEach(feature ->
+            dictionaryService.importDictionariesForFeature(
+                securityInfo,
+                ImportType.ADD_ONLY,
+                feature.meaning()
+            ).subscribe()
+        );
+
+        return Mono.just(tenant);
     }
 }

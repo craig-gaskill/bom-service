@@ -1,5 +1,8 @@
 package com.cagst.bom.dictionary;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -11,17 +14,21 @@ import com.cagst.bom.security.SecurityInfo;
 import com.cagst.bom.spring.webflux.exception.BadRequestResourceException;
 import com.cagst.bom.spring.webflux.exception.ConflictResourceException;
 import com.cagst.bom.spring.webflux.exception.NotFoundResourceException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -38,13 +45,16 @@ import reactor.core.publisher.Mono;
 
     private final DictionaryRepository dictionaryRepository;
     private final DictionaryValueRepository dictionaryValueRepository;
+    private final ObjectMapper objectMapper;
 
     @Autowired
-    public DictionaryServiceImpl(@NonNull DictionaryRepository dictionaryRepository,
-                                 @NonNull DictionaryValueRepository dictionaryValueRepository
+    public DictionaryServiceImpl(DictionaryRepository dictionaryRepository,
+                                 DictionaryValueRepository dictionaryValueRepository,
+                                 ObjectMapper objectMapper
     ) {
         this.dictionaryRepository = dictionaryRepository;
         this.dictionaryValueRepository = dictionaryValueRepository;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -198,11 +208,13 @@ import reactor.core.publisher.Mono;
 
     @Override
     public Mono<Void> importDictionaries(@NonNull SecurityInfo securityInfo,
-                                         ImportType importType,
-                                         String featureMeaning,
+                                         @NonNull ImportType importType,
+                                         @NonNull String featureMeaning,
                                          Flux<Dictionary> dictionaries
     ) {
         Assert.notNull(securityInfo, "Argument [securityInfo] cannot be null");
+        Assert.notNull(importType, "Argument [importType] cannot be null");
+        Assert.hasText(featureMeaning, "Argument [featureMeaning] cannot be null or empty");
 
         return dictionaries.flatMap(dictionary -> {
             if (importType == ImportType.ADD_ONLY) {
@@ -219,6 +231,38 @@ import reactor.core.publisher.Mono;
                 );
             }
         }).then();
+    }
+
+    @Override
+    public Mono<Void> importDictionariesForFeature(@NonNull SecurityInfo securityInfo,
+                                                   @NonNull ImportType importType,
+                                                   @NonNull String featureMeaning
+    ) {
+        Assert.notNull(securityInfo, "Argument [securityInfo] cannot be null");
+        Assert.notNull(importType, "Argument [importType] cannot be null");
+        Assert.hasText(featureMeaning, "Argument [featureMeaning] cannot be null or empty");
+
+        var filename = featureMeaning.toLowerCase() + "-dictionaries.json";
+        var dictionaryResource = new ClassPathResource(filename);
+        if (!dictionaryResource.exists()) {
+            return Mono.error(new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Failed to find the resource file for [" + featureMeaning.toLowerCase() + "]"
+            ));
+        }
+
+        try (InputStream in = dictionaryResource.getInputStream()) {
+            var json = StreamUtils.copyToString(in, StandardCharsets.UTF_8);
+            var dictionaries = objectMapper.readValue(json, new TypeReference<List<Dictionary>>() {});
+
+            return importDictionaries(
+                securityInfo,
+                importType,
+                featureMeaning,
+                Flux.fromIterable(dictionaries));
+        } catch (IOException ex) {
+            return Mono.error(ex);
+        }
     }
 
     /**

@@ -33,7 +33,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import reactor.core.publisher.Mono;
 
@@ -163,7 +162,6 @@ import reactor.core.publisher.Mono;
     }
 
     @Override
-    @Transactional
     public Mono<User> register(@NonNull RegisterRequest registerRequest, String remoteAddress) {
         var tempSecurityInfo = new SecurityInfo.Builder()
             .tenantId(0) // this isn't needed / used when creating a Tenant or a User
@@ -184,11 +182,17 @@ import reactor.core.publisher.Mono;
                 )
                 .flatMap(this::insertAdminRole)
                 .map(__ -> UserConverter.convert(user))
-        );
+        ).flatMap(usr -> userAccessRepository.findDefault(usr.userId())
+                .map(userAccess ->
+                    new User.Builder()
+                        .from(usr)
+                        .access(Collections.singletonList(userAccess))
+                        .build()
+                )
+            );
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Mono<Boolean> checkEmail(@NonNull String email) {
         Assert.hasText(email, "Argument [email] cannot be null or empty.");
 
@@ -198,7 +202,6 @@ import reactor.core.publisher.Mono;
     }
 
     @Override
-    @Transactional
     public Mono<User> changePassword(@NonNull SecurityInfo securityInfo,
                                      @NonNull String newPassword,
                                      @NonNull String confirmationPassword
@@ -255,7 +258,7 @@ import reactor.core.publisher.Mono;
                     .userId(securityInfo.userId())
                     .roleId(role.roleId())
                     .build()
-            );
+            ).subscribe();
 
             return role;
         });

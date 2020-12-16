@@ -13,12 +13,16 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 
+import com.cagst.bom.dictionary.value.DictionaryValue;
 import com.cagst.bom.dictionary.value.DictionaryValueRepository;
+import com.cagst.bom.imports.ImportType;
 import com.cagst.bom.search.SearchCriteria;
 import com.cagst.bom.security.SecurityInfo;
 import com.cagst.bom.spring.webflux.exception.BadRequestResourceException;
 import com.cagst.bom.spring.webflux.exception.ConflictResourceException;
 import com.cagst.bom.spring.webflux.exception.NotFoundResourceException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -35,8 +39,13 @@ import reactor.test.StepVerifier;
 public class DictionaryServiceImplTest {
     private final DictionaryRepository dictionaryRepository = mock(DictionaryRepository.class);
     private final DictionaryValueRepository dictionaryValueRepository = mock(DictionaryValueRepository.class);
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private final DictionaryServiceImpl service = new DictionaryServiceImpl(dictionaryRepository, dictionaryValueRepository);
+    private final DictionaryServiceImpl service = new DictionaryServiceImpl(
+        dictionaryRepository,
+        dictionaryValueRepository,
+        objectMapper
+        );
 
     private final SecurityInfo securityInfo = new SecurityInfo.Builder()
         .tenantId(1)
@@ -532,6 +541,53 @@ public class DictionaryServiceImplTest {
 
                 verify(dictionaryRepository, times(0)).insert(any(SecurityInfo.class), any(Dictionary.class), any(String.class));
                 verify(dictionaryRepository, times(1)).update(any(SecurityInfo.class), any(Dictionary.class));
+            }
+        }
+    }
+
+    @DisplayName("when importing Dictionaries")
+    @Nested
+    class WhenImportDictionaries {
+        @BeforeEach
+        void setUp() {
+            when(dictionaryRepository.findByMeaning(any(SecurityInfo.class), anyString()))
+                .thenReturn(Mono.empty());
+            when(dictionaryRepository.insert(any(SecurityInfo.class), any(Dictionary.class), anyString()))
+                .thenAnswer(args -> {
+                    var inserted = new Dictionary.Builder()
+                        .from(args.getArgument(1))
+                        .dictionaryId(1L)
+                        .build();
+
+                    return Mono.just(inserted);
+                });
+            when(dictionaryValueRepository.insert(any(SecurityInfo.class), any(DictionaryValue.class), anyLong()))
+                .thenAnswer(args -> {
+                    var inserted = new DictionaryValue.Builder()
+                        .from(args.getArgument(1))
+                        .dictionaryValueId(1L)
+                        .build();
+
+                    return Mono.just(inserted);
+                });
+        }
+
+        @DisplayName("for Feature")
+        @Nested
+        class ForFeature {
+            @DisplayName("should emit an Error when no resource was found for the specified feature")
+            @Test
+            void testResourceNotFound() {
+                StepVerifier.create(service.importDictionariesForFeature(securityInfo, ImportType.ADD_ONLY, "bad"))
+                    .expectError()
+                    .verify();
+            }
+
+            @DisplayName("should emit successfully when a resource was found for the specified feature")
+            @Test
+            void testResourceFound() {
+                StepVerifier.create(service.importDictionariesForFeature(securityInfo, ImportType.ADD_ONLY, "CORE"))
+                    .verifyComplete();
             }
         }
     }

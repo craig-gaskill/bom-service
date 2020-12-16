@@ -155,7 +155,24 @@ public interface DictionaryService {
      * @return Will emit if successful (or accepted for import) and an error if the import failed.
      */
     Mono<Void> importDictionaries(@NonNull SecurityInfo securityInfo,
-                                  ImportType importType,
-                                  String featureMeaning,
+                                  @NonNull ImportType importType,
+                                  @NonNull String featureMeaning,
                                   Flux<Dictionary> dictionaries);
+
+    /**
+     * Imports the dictionaries according to the {@link ImportType} for the specified Feature by loading the JSON
+     * defined by {@code <feature_meaning>-dictionaries.json}.
+     *
+     * @param securityInfo
+     *      The {@link SecurityInfo} that contains the information about the user performing the request.
+     * @param importType
+     *      The {@link ImportType Type} of import to perform.
+     * @param featureMeaning
+     *      The meaning of the Feature to associate the Dictionaries with.
+     *
+     * @return Will emit if successful (or accepted for import) and an error if the import failed.
+     */
+    Mono<Void> importDictionariesForFeature(@NonNull SecurityInfo securityInfo,
+                                            @NonNull ImportType importType,
+                                            @NonNull String featureMeaning);
 }
