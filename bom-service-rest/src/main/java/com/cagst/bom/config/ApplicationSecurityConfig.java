@@ -20,15 +20,15 @@ import org.springframework.security.web.server.context.ServerSecurityContextRepo
  */
 @Configuration
 @EnableWebFluxSecurity
-public class SecurityConfig {
+public class ApplicationSecurityConfig {
     private static final int STRENGTH = 12;
 
     private final ReactiveAuthenticationManager authenticationManager;
     private final ServerSecurityContextRepository securityContextRepository;
 
     @Autowired
-    public SecurityConfig(@NonNull ReactiveAuthenticationManager authenticationManager,
-                          @NonNull ServerSecurityContextRepository securityContextRepository
+    public ApplicationSecurityConfig(@NonNull ReactiveAuthenticationManager authenticationManager,
+                                     @NonNull ServerSecurityContextRepository securityContextRepository
     ) {
         this.authenticationManager = authenticationManager;
         this.securityContextRepository = securityContextRepository;

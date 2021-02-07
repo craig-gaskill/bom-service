@@ -9,6 +9,7 @@ import org.springframework.lang.Nullable;
 @JsonDeserialize(builder = Permission.Builder.class)
 @JsonPropertyOrder({
     "permissionId",
+    "featureId",
     "display",
     "code",
     "description",
@@ -25,6 +26,8 @@ public interface Permission extends BaseDTO {
     @Nullable
     @Value.Auxiliary
     Long permissionId();
+
+    long featureId();
 
     String display();
 

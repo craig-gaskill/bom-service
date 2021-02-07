@@ -15,6 +15,7 @@ import io.r2dbc.spi.Row;
         var builder = new RolePermission.Builder()
             .rolePermissionId(row.get("role_permission_id", Long.class))
             .permissionId(row.get("permission_id", Long.class))
+            .featureId(row.get("feature_id", Long.class))
             .code(row.get("code", String.class))
             .display(row.get("display", String.class))
             .description(row.get("description", String.class))

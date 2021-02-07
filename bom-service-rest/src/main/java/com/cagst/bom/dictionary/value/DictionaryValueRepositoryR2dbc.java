@@ -210,38 +210,38 @@ import reactor.util.annotation.Nullable;
 
         var INSERT_DICTIONARY_VALUE =
             "INSERT INTO dictionary_value (" +
-                "  tenant_id" +
-                " ,dictionary_id" +
-                " ,display" +
-                " ,display_key" +
-                " ,meaning" +
-                " ,description" +
-                " ,viewable_ind" +
-                " ,editable_ind" +
-                " ,deletable_ind" +
-                " ,sort_order" +
-                " ,active_ind" +
-                " ,created_id" +
-                " ,created_source" +
-                " ,updated_id" +
-                " ,updated_source" +
-                ") VALUES (" +
-                "  :tenant_id" +
-                " ,:dictionary_id" +
-                " ,:display" +
-                " ,:display_key" +
-                " ,:meaning" +
-                " ,:description" +
-                " ,:viewable_ind" +
-                " ,:editable_ind" +
-                " ,:deletable_ind" +
-                " ,:sort_order" +
-                " ,:active_ind" +
-                " ,:created_id" +
-                " ,:created_source" +
-                " ,:updated_id" +
-                " ,:updated_source" +
-                ") RETURNING dictionary_value_id";
+            "  tenant_id" +
+            " ,dictionary_id" +
+            " ,display" +
+            " ,display_key" +
+            " ,meaning" +
+            " ,description" +
+            " ,viewable_ind" +
+            " ,editable_ind" +
+            " ,deletable_ind" +
+            " ,sort_order" +
+            " ,active_ind" +
+            " ,created_id" +
+            " ,created_source" +
+            " ,updated_id" +
+            " ,updated_source" +
+            ") VALUES (" +
+            "  :tenant_id" +
+            " ,:dictionary_id" +
+            " ,:display" +
+            " ,:display_key" +
+            " ,:meaning" +
+            " ,:description" +
+            " ,:viewable_ind" +
+            " ,:editable_ind" +
+            " ,:deletable_ind" +
+            " ,:sort_order" +
+            " ,:active_ind" +
+            " ,:created_id" +
+            " ,:created_source" +
+            " ,:updated_id" +
+            " ,:updated_source" +
+            ") RETURNING dictionary_value_id";
 
         var spec = databaseClient.sql(INSERT_DICTIONARY_VALUE);
         spec = new SqlParameterMap()
@@ -319,7 +319,9 @@ import reactor.util.annotation.Nullable;
             " ,:created_source" +
             " ,:updated_id" +
             " ,:updated_source" +
-            " FROM dictionary d WHERE d.meaning = :dictionary_meaning" +
+            "  FROM dictionary d " +
+            " WHERE d.meaning = :dictionary_meaning" +
+            "   AND d.tenant_id = :tenant_id" +
             " RETURNING dictionary_value_id";
 
         var spec = databaseClient.sql(INSERT_DICTIONARY_VALUE);

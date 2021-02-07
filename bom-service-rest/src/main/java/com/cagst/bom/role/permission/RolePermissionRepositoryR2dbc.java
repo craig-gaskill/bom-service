@@ -24,17 +24,20 @@ import reactor.core.publisher.Flux;
     private final String SELECT_FOR_ROLE =
         "SELECT rp.role_permission_id" +
         "      ,p.permission_id" +
+        "      ,p.feature_id" +
         "      ,p.code" +
         "      ,p.display" +
         "      ,p.description" +
-        "      ,rp.granted_ind" +
-        "      ,rp.active_ind" +
-        "      ,rp.updated_cnt" +
-        "  FROM permission p" +
-        " INNER JOIN tenant_feature tf ON (tf.tenant_id = :tenant_id AND tf.feature_id = p.feature_id AND tf.active_ind = true)" +
-        "  LEFT OUTER JOIN role_permission rp ON (rp.tenant_id = :tenant_id AND rp.permission_id = p.permission_id AND rp.active_ind = true)" +
-        " WHERE rp.tenant_id = :tenant_id" +
-        "   AND rp.role_id = :role_id" +
+        "      ,coalesce(rp.granted_ind, false) AS granted_ind" +
+        "      ,coalesce(rp.active_ind, false) AS active_ind" +
+        "      ,coalesce(rp.updated_cnt, 0) AS updated_cnt" +
+        "  FROM tenant_feature tf" +
+        " INNER JOIN permission p" +
+        "       ON (p.feature_id = tf.feature_id AND p.active_ind = true)" +
+        "  LEFT OUTER JOIN role_permission rp" +
+        "       ON (rp.tenant_id = :tenant_id AND rp.permission_id = p.permission_id AND rp.active_ind = true AND rp.role_id = :role_id)" +
+        " WHERE tf.tenant_id = :tenant_id" +
+        "   AND tf.active_ind = true" +
         " ORDER BY p.display";
 
     @Autowired

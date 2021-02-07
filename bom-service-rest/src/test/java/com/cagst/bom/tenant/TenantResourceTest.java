@@ -19,7 +19,7 @@ import static org.springframework.restdocs.webtestclient.WebTestClientRestDocume
 import java.time.OffsetDateTime;
 import java.util.List;
 
-import com.cagst.bom.config.SecurityConfig;
+import com.cagst.bom.config.ApplicationSecurityConfig;
 import com.cagst.bom.search.SearchCriteria;
 import com.cagst.bom.security.SecurityInfo;
 import com.cagst.bom.spring.security.ReactiveSecurityAutoConfiguration;
@@ -62,7 +62,7 @@ import reactor.core.publisher.Mono;
     JwtServiceImpl.class,
     JwtReactiveAuthenticationManager.class,
     ReactiveSecurityAutoConfiguration.class,
-    SecurityConfig.class
+    ApplicationSecurityConfig.class
 })
 @WebFluxTest(TenantResource.class)
 class TenantResourceTest {

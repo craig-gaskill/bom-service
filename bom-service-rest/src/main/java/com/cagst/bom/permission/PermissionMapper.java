@@ -14,6 +14,9 @@ import io.r2dbc.spi.Row;
     public Permission apply(Row row) {
         var builder = new Permission.Builder()
             .permissionId(row.get("permission_id", Long.class))
+            .featureId(row.get("feature_id", Long.class))
+            .code(row.get("code", String.class))
+            .display(row.get("display", String.class))
             .active(row.get("active_ind", Boolean.class))
             .updatedCount(row.get("updated_cnt", Integer.class));
 

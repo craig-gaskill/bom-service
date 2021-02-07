@@ -13,11 +13,11 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
  * @author Craig Gaskill
  */
 @Configuration
-public class EventConfig {
+public class ApplicationEventConfig {
     @Autowired
     @Bean
     public ApplicationEventMulticaster simpleApplicationEventMulticaster(ThreadPoolTaskExecutor taskExecutor) {
-        SimpleApplicationEventMulticaster eventMulticaster = new SimpleApplicationEventMulticaster();
+        var eventMulticaster = new SimpleApplicationEventMulticaster();
         eventMulticaster.setTaskExecutor(taskExecutor);
 
         return eventMulticaster;

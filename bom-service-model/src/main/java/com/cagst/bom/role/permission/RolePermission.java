@@ -10,11 +10,11 @@ import org.springframework.lang.Nullable;
 @JsonPropertyOrder({
     "rolePermissionId",
     "permissionId",
+    "featureId",
     "code",
     "display",
     "description",
     "granted",
-    "display",
     "createdId",
     "createdDateTime",
     "active",
@@ -30,6 +30,8 @@ public interface RolePermission extends BaseDTO {
     Long rolePermissionId();
 
     long permissionId();
+
+    long featureId();
 
     String code();
 
